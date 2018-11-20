@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.octopus-project</groupId>
+    <artifactId>octopus-parent</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+    <name>octopus-parent</name>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!--        <parent.pom.version>0.0.1-SNAPSHOT</parent.pom.version>-->
+        <octopus.shared1.version>0.0.1-SNAPSHOT</octopus.shared1.version>
+
+        <spring.boot.maven.plugin.version>1.5.8.RELEASE</spring.boot.maven.plugin.version>
+    </properties>
+
+    <scm>
+        <url></url>
+        <developerConnection></developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+
+    <!--
+        <profiles>
+            <profile>
+                <id>profile-build</id>
+                <activation>
+                    <activeByDefault>true</activeByDefault>
+                </activation>
+
+
+
+            </profile>
+            <profile>
+                <id>profile-release</id>
+                <activation>
+                    <activeByDefault>false</activeByDefault>
+                </activation>
+
+
+
+            </profile>
+        </profiles>
+        -->
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.8.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>27.0-jre</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.2</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!--plugins dependencies-->
+
+
+            <!-- octopus dependencies -->
+            <dependency>
+                <groupId>de.octopus-project</groupId>
+                <artifactId>octopus-shared1</artifactId>
+                <version>${octopus.shared1.version}</version>
+            </dependency>
+
+
+
+
+            <dependency>
+                <groupId>de.octopus-project</groupId>
+                <artifactId>octopus-shared3</artifactId>
+                <version>LATEST</version>
+            </dependency>
+
+
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <distributionManagement>
+
+    </distributionManagement>
+
+    <repositories></repositories>
+    <pluginRepositories></pluginRepositories>
+
+
+    <!-- <profiles>
+         <profile>
+             <id>profile-build</id>
+             <activation>
+                 <activeByDefault>true</activeByDefault>
+             </activation>
+
+
+         </profile>
+         <profile>
+             <id>profile-release</id>
+             <activation>
+                 <activeByDefault>false</activeByDefault>
+             </activation>
+
+
+         </profile>
+     </profiles>-->
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.maven.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <releaseProfiles>releases</releaseProfiles>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+
+    </build>
+
+
+    <reporting>
+
+
+    </reporting>
+
+
+</project>
