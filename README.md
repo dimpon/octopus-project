@@ -1,4 +1,4 @@
-##Maven structure for Integration components
+## Maven structure for Integration components
 
 ### Common information
 
