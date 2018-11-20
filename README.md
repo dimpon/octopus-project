@@ -16,7 +16,7 @@ From the directories perspective this structure copies the current integration c
 * The very top parent pom contains versions of dependencies (internal and external), it also contain the common variables, and common plugins. (See *octopus-parent*) 
 i.e. the things that are essential for all artifacts. All artifacts poms should inherit this parent pom. It also has it's own release cycle. It is placed in separate folder and basically is a "component without code";
 In some cases the additional poms can be build into hierarchy, see *octopus-ti-parent*.
-* The second type of non-artifact pom is a "bulk build poms". They are placed in directories and their function is processing cascade build.
+* The second type of non-artifact pom is a "bulk build poms". They are placed in directories and their single function is a cascade build processing.
 
 ##### Few samples:
 We have 3 shared components, *octopus-shared1* and *octopus-shared2* has dependency to apache-common:
@@ -46,9 +46,9 @@ ti2:
 (the dependency to *octopus-ti-parent* is not shown here casue it is parent, but dependencies which come via *octopus-ti-parent* is shown)
 
 ##### Few scenarios.
-######Case 1
-Let's consider, that developer John works on *shared1* component. He commits code, but his changes are not visible for others components until he release shared1.
-Once the job is done he runs ```mvn release:prepare release:perform -B``` (or job in Bamboo, if it exists) and if in  *octopus-parent* is specified:
+###### Case 1
+Let's consider, that developer John works on *octopus-shared1* component. He commits code every evening, but his changes are not visible for others components until he release *octopus-shared1*.
+Once the job is done he runs ```mvn release:prepare release:perform -B``` (or job in Bamboo, if it exists) and if *octopus-parent* has:
 ```xml
 <dependency>
     <groupId>de.octopus-project</groupId>
@@ -56,7 +56,8 @@ Once the job is done he runs ```mvn release:prepare release:perform -B``` (or jo
     <version>RELEASE</version>
 </dependency>
 ```
-the ti components will use the latest *released* shared1. But if component is critical, the distinct version can be specified in *octopus-parent*:  
+the ti components will use the latest *released* shared1. 
+But if component is critical, the distinct version can be specified in *octopus-parent*:  
 ```xml
 <dependency>
     <groupId>de.octopus-project</groupId>
@@ -64,7 +65,7 @@ the ti components will use the latest *released* shared1. But if component is cr
     <version>0.0.3</version>
 </dependency>
 ```
-In this case, the *octopus-parent* must be amended and released. For avoid changing the <parent> section in all components I prefer to have RELEASE version:   
+In this case, the *octopus-parent* must be amended and released. For avoid changing the ```<parent>``` section in all components I prefer to have RELEASE version for `````<parent>`````:   
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -84,23 +85,23 @@ In this case, the *octopus-parent* must be amended and released. For avoid chang
 ```
 But it is discussable.
 
-######Case 2
+###### Case 2
 The *octopus-ti2* must be emergency fixed. For fixing the *octopus-shared1* and *octopus-shared2* must be changed.
-The  *octopus-shared1*,  *octopus-shared2* and *octopus-ti2*  are released with PATCH version incrementing (https://semver.org/), in *octopus-ti2* POM the new version of *octopus-shared1* and *octopus-shared2* are specified, but the  
-*octopus-parent* is not changed. So, the patch of *octopus-shared1*, *octopus-shared2* is not visible for others ti. During the next release, the minor version is incremented for all components and all versions are aligned. The patch version in *octopus-ti2* POM is removed.
+The  *octopus-shared1*,  *octopus-shared2* and *octopus-ti2*  are released with PATCH version incrementing (https://semver.org/), in *octopus-ti2* pom   the new version of *octopus-shared1* and *octopus-shared2* are specified, but the  
+*octopus-parent* is not changed. So, the patch of *octopus-shared1*, *octopus-shared2* is not visible for others ti. During the next release, the minor version is incremented for all components and all versions are aligned. The patch version in *octopus-ti2* pom is removed.
 
      
 #### Advantages. (at lease as I can see it :)
 
 1. The artifacts versions are in one place;
-2. The inheritance levels are decreased;
+2. The inheritance levels are decreased, less chances to misuse;
 3. The dependencies well organized but in same time flexible;
-4. Makes easier to open part of codebase and work with it separately and be sure that up-to-date changes are available;
-5. Makes easier in the future organising the separate build/release pipelines for each component in Bamboo.
-6. Plugins management are centralized (im my case all ti are build with *spring-boot-maven-plugin* but absolutely all component are build with *maven-source-plugin* and *maven-javadoc-plugin*) 
+4. Easier to open part of codebase and work with it separately and be sure that up-to-date changes of others components are available;
+5. Easier in the future organising the separate build/release pipelines for each component in Bamboo.
+6. Plugins management are centralized (im my case all ti are build with *spring-boot-maven-plugin* but absolutely all components are build with *maven-source-plugin* and *maven-javadoc-plugin*) 
  
 #### Disadvantages. 
-1. Need to keep parent poms like a separate components;
+1. Need to keep and support parent poms like a separate components;
 2. Need to release components and parent poms for propagating the changes among others components;   
 3. The components have different PATCH versions during deployment, but it will be aligned during big release rolling out; 
 
