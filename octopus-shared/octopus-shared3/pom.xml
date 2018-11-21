@@ -11,7 +11,8 @@
     <parent>
         <groupId>de.octopus-project</groupId>
         <artifactId>octopus-parent</artifactId>
-        <version>RELEASE</version>
+        <!--version>RELEASE</version-->
+	<version>0.0.1-SNAPSHOT</version>
     </parent>
 
 
