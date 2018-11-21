@@ -8,6 +8,12 @@
   - The "bulk build poms" contain no information about how to build and which plugins to use;
   - Dependencies come from another dependencies, not from the parent pom (but it is possible in some cases);
   
+### Build the project
+
+Because the parent poms lay not in the project hierarchy, they are taken fom repository - remote or local.
+The option could be using ```<relativePath>``` but the main idea is using released components. Because of that, after pulling the first time the project must be build with ```build.bat```.      
+After that you can buld th eproject with ```mvn clean install``` from the root folder.
+  
 ### Let's see closer
 At first, make a statement that we have 2 types of artifacts: libraries (shared components) and running jars (VM). VMs is a final level of hierarchy, so no others components can depends on it.  
 
